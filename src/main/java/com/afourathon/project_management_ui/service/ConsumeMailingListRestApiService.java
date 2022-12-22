@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.afourathon.project_management_ui.data.entity.MailingList;
+import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.MailingListRequest;
+import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
 
 @Service
 public class ConsumeMailingListRestApiService {
@@ -59,6 +61,43 @@ public class ConsumeMailingListRestApiService {
 		URI uri = URI.create("http://localhost:9191/api/v1/emails/add");
 		
 		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
+		
+		String apiResponse = response.getBody();
+		
+		System.out.println(apiResponse);
+		
+		return apiResponse;
+	}
+
+	public String updateEmail(Long mailId, MailingListRequest mailingListRequest) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<MailingListRequest> entity = new HttpEntity<>(mailingListRequest, headers);
+		
+		URI uri = URI.create("http://localhost:9191/api/v1/emails/updateBy=ID/email/" + mailId);
+		
+		ResponseEntity<MailingList> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, MailingList.class);
+		
+		MailingList email = response.getBody();
+		
+		String apiResponse = null;
+		
+		if(null != email)
+			apiResponse = "Email has been updated successfully!";
+		
+		System.out.println(apiResponse);
+		
+		return apiResponse;
+	}
+
+	public String deleteEmailById(Long mailId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+		
+		URI uri = URI.create("http://localhost:9191/api/v1/emails/deleteBy=ID/email/" + mailId);
+
+		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
 		
 		String apiResponse = response.getBody();
 		
