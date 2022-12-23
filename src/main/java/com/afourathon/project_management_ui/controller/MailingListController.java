@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.afourathon.project_management_ui.data.entity.MailingList;
-import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.MailingListRequest;
-import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
 import com.afourathon.project_management_ui.service.ConsumeMailingListRestApiService;
 
 @Controller
@@ -22,7 +20,7 @@ public class MailingListController {
 	@Autowired
 	ConsumeMailingListRestApiService mailingListService;
 	
-	@GetMapping({"/", "/displayAllMailingList"})
+	@GetMapping("/displayAllMailingList")
 	public ModelAndView displayAllMailingList() {
 		ModelAndView modelAndView = new ModelAndView("display-mailing-list");
 		List<MailingList> mailingList = mailingListService.getAllMailingList();

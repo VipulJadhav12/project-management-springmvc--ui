@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.afourathon.project_management_ui.data.entity.MailingList;
 import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
+import com.afourathon.project_management_ui.service.ConsumeMailingListRestApiService;
 import com.afourathon.project_management_ui.service.ConsumeProjectRestApiService;
 
 @Controller
@@ -19,6 +21,9 @@ public class ProjectController {
 	
 	@Autowired
 	ConsumeProjectRestApiService projectService;
+	
+	@Autowired
+	ConsumeMailingListRestApiService mailingListService;
 	
 	@GetMapping({"/", "/displayAllProjects"})
 	public ModelAndView displayAllProjects() {
@@ -29,8 +34,17 @@ public class ProjectController {
 		return modelAndView;
 	}
 	
+	@GetMapping("/displayProject")
+	public ModelAndView displayProject(@RequestParam Long projectId) {
+		ModelAndView modelAndView = new ModelAndView("display-project");
+		Project project = projectService.getProjectById(projectId);
+		modelAndView.addObject("project", project);
+		
+		return modelAndView;
+	}
+	
 	@GetMapping("/addProjectForm")
-	public ModelAndView addEmployeeForm() {
+	public ModelAndView addProjectForm() {
 		ModelAndView modelAndView = new ModelAndView("add-project-form");
 		ProjectRequest projectRequest = new ProjectRequest();
 		modelAndView.addObject("projectRequest", projectRequest);
@@ -46,7 +60,7 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/updateProjectForm")
-	public ModelAndView displayUpdateForm(@RequestParam Long projectId) {
+	public ModelAndView updateProjectForm(@RequestParam Long projectId) {
 		ModelAndView modelAndView = new ModelAndView("update-project-form");
 		
 		Project project = projectService.getProjectById(projectId);
@@ -68,6 +82,33 @@ public class ProjectController {
 		projectService.updateProject(projectId, projectRequest);
 		
 		return "redirect:/displayAllProjects";
+	}
+	
+	@GetMapping("/displayUnassignedMailingList")
+	public ModelAndView displayUnassignedMailingList(@RequestParam Long projectId) {
+		ModelAndView modelAndView = new ModelAndView("display-unassigned-mailing-list");
+		
+		Project project = projectService.getProjectById(projectId);
+		modelAndView.addObject("project", project);
+		
+		List<MailingList> unassignedMailingList =  mailingListService.getUnassignedMailingList(projectId);
+		modelAndView.addObject("unassignedMailingList", unassignedMailingList);
+		
+		return modelAndView;
+	}
+	
+	@GetMapping("/assignEmailToProject")
+	public String assignEmailToProject(@RequestParam Long projectId, @RequestParam Long mailId) {
+		projectService.assignEmailToProject(projectId, mailId);
+		
+		return "redirect:/displayUnassignedMailingList?projectId=" + String.valueOf(projectId);
+	}
+	
+	@GetMapping("/removeEmailFromProject")
+	public String removeEmailFromProject(@RequestParam Long projectId, @RequestParam Long mailId) {
+		projectService.removeAssignedEmailFromProject(projectId, mailId);
+		
+		return "redirect:/displayProject?projectId=" + String.valueOf(projectId);
 	}
 	
 	@GetMapping("/deleteProject")

@@ -1,7 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 	
 	<head>
-		<title>List of Projects</title>
+		<title>Project Details</title>
 		
 		<link rel="stylesheet" 
 			type="text/css" 
@@ -13,15 +13,9 @@
 	</head>
 	
 	<body>
-		
 		<div class="container">
-		
-			<h2 style="text-align: center;">Weekly Status Reporting Application</h3>
-			<h3 style="text-align: center;">List of Projects</h3>
-			
+			<h3 style="text-align: center;">Project Details</h3>
 			<hr/>
-			<a th:href="@{/addProjectForm}" class="btn btn-primary">Add Project</a>
-			<br/><br/>
 			<table class="table table-bordered table-striped" id="projectTable">
 			
 				<thead>
@@ -32,45 +26,59 @@
 						<th>End Date</th>
 						<th>Manager Name</th>
 						<th>Manager Email</th>
-						<th>Select Project</th>
-						<th>Update Project</th>
-						<th>Delete Project</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="project: ${projects}">
+					<tr>
 						<td th:text="${project.id}" />
 						<td th:text="${project.name}" />
 						<td th:text="${project.startDate}" />
 						<td th:text="${project.endDate}" />
 						<td th:text="${project.managerName}" />
 						<td th:text="${project.managerEmail}" />
+					</tr>
+				</tbody>
+				
+			</table>
+			<hr/>
+			<h4>Add New Email IDs:</h4>
+			<hr/>
+			<table class="table table-bordered table-striped" id="mailingListTable">
+			
+				<thead>
+					<tr>
+						<th>Email ID</th>
+						<th>Recipient Name</th>
+						<th>Email</th>
+						<th>Remove Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="email: ${unassignedMailingList}">
+						<td th:text="${email.id}" />
+						<td th:text="${email.recipientName}" />
+						<td th:text="${email.email}" />
 						<td>
-							<a th:href="@{/displayProject(projectId=${project.id})}" class="btn btn-info">Select</a>
-						</td>
-						<td>
-							<a th:href="@{/updateProjectForm(projectId=${project.id})}" class="btn btn-info">Update</a>
-						</td>
-						<td>
-							<a th:href="@{/deleteProject(projectId=${project.id})}" class="btn btn-danger">Delete</a>
+							<a th:href="@{/assignEmailToProject(projectId=${project.id}, mailId=${email.id})}" class="btn btn-danger">Add</a>
 						</td>
 					</tr>
 				</tbody>
 				
 			</table>
+			<hr/>
+			<a th:href="@{/displayProject(projectId=${project.id})}">Back to Project Details</a>
 		</div>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
 		<script>
 			$(document).ready(function() {
-				// Script to disable the sorting fn on the DataTable
-				$("#projectTable").DataTable({
-						'aoColumnDefs': [{
-        				'bSortable': false,
-        				'aTargets': [-1, -2, -3] /* Disabling sorting fn on the first 3 col, starting from the right */
-    				}]
-				});
+				$("#mailingListTable").DataTable({
+					'aoColumnDefs': [{
+    				'bSortable': false,
+    				'aTargets': [-1] /* 1st one, start by the right */
+				}]
+			});
 			})
 		</script>
 	</body>

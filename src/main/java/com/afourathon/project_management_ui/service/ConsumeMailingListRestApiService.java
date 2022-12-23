@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.afourathon.project_management_ui.data.entity.MailingList;
-import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.MailingListRequest;
-import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
 
 @Service
 public class ConsumeMailingListRestApiService {
@@ -51,6 +49,20 @@ public class ConsumeMailingListRestApiService {
 		MailingList email = response.getBody();
 		
 		return email;
+	}
+	
+	public List<MailingList> getUnassignedMailingList(Long projectId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<List<MailingList>> entity = new HttpEntity<>(headers);
+		
+		URI uri = URI.create("http://localhost:9191/api/v1/emails/getAllUnAssignedBy=PROJECT_ID/project/" + projectId);
+
+		ResponseEntity<List<MailingList>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<MailingList>>(){});
+		
+		List<MailingList> mailingList = response.getBody();
+		
+		return mailingList;
 	}
 
 	public String addEmail(MailingListRequest mailingListRequest) {

@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
 
-
 @Service
 public class ConsumeProjectRestApiService {
 
@@ -83,6 +82,48 @@ public class ConsumeProjectRestApiService {
 		
 		if(null != project)
 			apiResponse = "Project has been updated successfully!";
+		
+		System.out.println(apiResponse);
+		
+		return apiResponse;
+	}
+	
+	public String assignEmailToProject(Long projectId, Long mailId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<Project> entity = new HttpEntity<>(headers);
+		
+		URI uri = URI.create("http://localhost:9191/api/v1/projects/assignEmail/project/" + projectId + "/email/" + mailId);
+
+		ResponseEntity<Project> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, new ParameterizedTypeReference<Project>(){});
+		
+		Project project = response.getBody();
+		
+		String apiResponse = null;
+		
+		if(null != project)
+			apiResponse = "Project's mailing list has been updated successfully!";
+		
+		System.out.println(apiResponse);
+		
+		return apiResponse;
+	}
+	
+	public String removeAssignedEmailFromProject(Long projectId, Long mailId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<Project> entity = new HttpEntity<>(headers);
+		
+		URI uri = URI.create("http://localhost:9191/api/v1/projects/removeEmail/project/" + projectId + "/email/" + mailId);
+
+		ResponseEntity<Project> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, new ParameterizedTypeReference<Project>(){});
+		
+		Project project = response.getBody();
+		
+		String apiResponse = null;
+		
+		if(null != project)
+			apiResponse = "Project's mailing list has been updated successfully!";
 		
 		System.out.println(apiResponse);
 		

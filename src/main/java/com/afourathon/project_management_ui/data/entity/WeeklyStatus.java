@@ -3,14 +3,6 @@ package com.afourathon.project_management_ui.data.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -39,10 +31,21 @@ public class WeeklyStatus {
 	
 	private String risk;
 	
+	@DateTimeFormat(iso = ISO.DATE, pattern = "yyyy-MM-dd")
+	@JsonFormat
+    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate weeklyEndDate;
 	
+	@DateTimeFormat(iso = ISO.DATE_TIME,
+			pattern = "yyyy-MM-dd HH:mm:ss a")
+	@JsonFormat
+	    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createdOn;
 	
+	@DateTimeFormat(iso = ISO.DATE_TIME,
+			pattern = "yyyy-MM-dd HH:mm:ss a")
+	@JsonFormat
+	    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime lastModifiedOn;
 	
 	public WeeklyStatus(String status, String highlight, String risk, LocalDate weeklyEndDate, LocalDateTime createdOn, LocalDateTime lastModifiedOn) {
