@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
+import com.afourathon.project_management_ui.data.payloads.response.ApiResponse;
 
 @Service
 public class ConsumeProjectRestApiService {
@@ -51,39 +52,34 @@ public class ConsumeProjectRestApiService {
 		return project;
 	}
 
-	public String addProject(ProjectRequest projectRequest) {
+	public ApiResponse addProject(ProjectRequest projectRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<ProjectRequest> entity = new HttpEntity<>(projectRequest, headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/projects/add");
 		
-		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.POST, entity, ApiResponse.class);
 		
-		String apiResponse = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}
 	
-	public String updateProject(Long projectId, ProjectRequest projectRequest) {
+	public ApiResponse updateProject(Long projectId, ProjectRequest projectRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<ProjectRequest> entity = new HttpEntity<>(projectRequest, headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/projects/updateBy=ID/project/" + projectId);
 		
-		ResponseEntity<Project> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, Project.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, ApiResponse.class);
 		
-		Project project = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		String apiResponse = null;
-		
-		if(null != project)
-			apiResponse = "Project has been updated successfully!";
-		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}
@@ -130,18 +126,18 @@ public class ConsumeProjectRestApiService {
 		return apiResponse;
 	}
 
-	public String deleteProjectById(Long projectId) {
+	public ApiResponse deleteProjectById(Long projectId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/projects/deleteBy=ID/project/" + projectId);
 
-		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, ApiResponse.class);
 		
-		String apiResponse = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}

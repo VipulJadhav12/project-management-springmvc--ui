@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.afourathon.project_management_ui.data.entity.MailingList;
 import com.afourathon.project_management_ui.data.payloads.request.MailingListRequest;
+import com.afourathon.project_management_ui.data.payloads.response.ApiResponse;
 
 @Service
 public class ConsumeMailingListRestApiService {
@@ -65,55 +66,50 @@ public class ConsumeMailingListRestApiService {
 		return mailingList;
 	}
 
-	public String addEmail(MailingListRequest mailingListRequest) {
+	public ApiResponse addEmail(MailingListRequest mailingListRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<MailingListRequest> entity = new HttpEntity<>(mailingListRequest, headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/emails/add");
 		
-		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.POST, entity, ApiResponse.class);
 		
-		String apiResponse = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}
 
-	public String updateEmail(Long mailId, MailingListRequest mailingListRequest) {
+	public ApiResponse updateEmail(Long mailId, MailingListRequest mailingListRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<MailingListRequest> entity = new HttpEntity<>(mailingListRequest, headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/emails/updateBy=ID/email/" + mailId);
 		
-		ResponseEntity<MailingList> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, MailingList.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, ApiResponse.class);
 		
-		MailingList email = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		String apiResponse = null;
-		
-		if(null != email)
-			apiResponse = "Email has been updated successfully!";
-		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}
 
-	public String deleteEmailById(Long mailId) {
+	public ApiResponse deleteEmailById(Long mailId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create("http://localhost:9191/api/v1/emails/deleteBy=ID/email/" + mailId);
 
-		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class);
+		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, ApiResponse.class);
 		
-		String apiResponse = response.getBody();
+		ApiResponse apiResponse = response.getBody();
 		
-		System.out.println(apiResponse);
+		System.out.println(apiResponse.toString());
 		
 		return apiResponse;
 	}
