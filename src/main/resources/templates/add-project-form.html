@@ -10,30 +10,43 @@
 	<body>
 		
 		<div class="container">
-			<h3>Add New Project</h3>
-			<hr/>
-			<form th:action="@{/addProject}" th:object="${projectRequest}" method="POST">
-				
-				<label>Project Name</label><br>
-				<input type="text" th:field="${projectRequest.name}" class="form-control col-4 mb-4" placeholder="Enter Project Name" />
-				
-				<label>Start Date</label><br>
-				<input type="date" th:field="${projectRequest.startDate}" class="form-control col-4 mb-4" placeholder="Select Start Date" />
-				
-				<label>End Date</label><br>
-				<input type="date" th:field="${projectRequest.endDate}" class="form-control col-4 mb-4" placeholder="Select End Date" />
-				
-				<label>Manager Name</label><br>
-				<input type="text" th:field="${projectRequest.managerName}" class="form-control col-4 mb-4" placeholder="Enter Manager Name" />
-				
-				<label>Manager Email</label><br>
-				<input type="text" th:field="${projectRequest.managerEmail}" class="form-control col-4 mb-4" placeholder="Enter Manager Email" />
-				
-				<button type="submit" class="btn btn-primary col-2">Save</button>
-				
-			</form>
-			<hr/>
-			<a th:href="@{/displayAllProjects}">Back to list</a>
+			<div style="border-style:solid 0.5px">
+				<h3>Add New Project</h3>
+				<hr/>
+				<form th:action="@{/addProject}" th:object="${projectRequest}" method="POST" class="form">
+					
+					<div class="form-group">
+						<label for="name">Project Name</label>
+						<input id="name" type="text" th:field="${projectRequest.name}" class="form-control col-4 mb-4" placeholder="Enter Project Name" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+					</div>
+					<div class="form-group">
+						<label for="startDate">Start Date</label><br>
+						<input id="startDate" type="date" th:field="${projectRequest.startDate}" class="form-control col-4 mb-4" placeholder="Select Start Date" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="${projectRequest.startDate}"></p>
+					</div>
+					<div class="form-group">
+						<label for="endDate">End Date</label><br>
+						<input id="endDate" type="date" th:field="${projectRequest.endDate}" class="form-control col-4 mb-4" placeholder="Select End Date" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="${projectRequest.endDate}"></p>
+					</div>
+					<div class="form-group">
+						<label for="managerName">Manager Name</label><br>
+						<input id="managerName" type="text" th:field="${projectRequest.managerName}" class="form-control col-4 mb-4" placeholder="Enter Manager Name" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('managerName')}" th:errors="${projectRequest.managerName}"></p>
+					</div>
+					<div class="form-group">
+						<label for="managerEmail">Manager Email</label><br>
+						<input id="managerEmail" type="text" th:field="${projectRequest.managerEmail}" class="form-control col-4 mb-4" placeholder="Enter Manager Email" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('managerEmail')}" th:errors="*{managerEmail}"></p>
+					</div>
+					
+					<button type="submit" class="btn btn-success col-2">Save Project</button>
+					
+				</form>
+				<hr/>
+				<a th:href="@{/displayAllProjects}">Back to Project list</a>
+			</div>
 		</div>
 		
 	</body>

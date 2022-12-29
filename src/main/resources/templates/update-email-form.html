@@ -10,21 +10,28 @@
 	<body>
 		
 		<div class="container">
-			<h3>Update An Email</h3>
-			<hr/>
-			<form th:action="@{/updateEmail(mailId=${mailId})}" th:object="${emailRequest}" method="POST">
-				
-				<label>Recipient Name</label><br>
-				<input type="text" th:field="${emailRequest.recipientName}" class="form-control col-4 mb-4" placeholder="Enter Recipient Name" />
-				
-				<label>Email</label><br>
-				<input type="text" th:field="${emailRequest.email}" class="form-control col-4 mb-4" placeholder="Enter a valid Email" />
-				
-				<button type="submit" class="btn btn-primary col-2">Save</button>
-				
-			</form>
-			<hr/>
-			<a th:href="@{/displayAllMailingList}">Back to list</a>
+			<div style="border-style:solid 0.5px">
+				<h3>Update An Email</h3>
+				<hr/>
+				<form th:action="@{/updateEmail(mailId=${mailId})}" th:object="${emailRequest}" method="POST" class="form">
+					
+					<div class="form-group">
+						<label for="recipientName">Recipient Name</label><br>
+						<input id="recipientName" type="text" th:field="${emailRequest.recipientName}" class="form-control col-4 mb-4" placeholder="Enter Recipient Name" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('recipientName')}" th:errors="*{recipientName}"></p>
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label><br>
+						<input id="email" type="text" th:field="${emailRequest.email}" class="form-control col-4 mb-4" placeholder="Enter a valid Email" />
+						<p class="alert alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+					</div>
+					
+					<button type="submit" class="btn btn-primary col-2">Save</button>
+					
+				</form>
+				<hr/>
+				<a th:href="@{/displayAllMailingList}">Back to list</a>
+			</div>
 		</div>
 		
 	</body>
