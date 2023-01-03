@@ -3,7 +3,7 @@ pipeline{
         def imageName = "krashnat922/afourathon2.0:projectmanagement-fe"
         mavenhome = tool name: 'Maven 3.5', type: 'maven'
         ENV_JOB_NAME = "projectmanagement-fe"
-        GIT_HELM_PATH = helm
+        GIT_HELM_PATH = "helm"
         VERSION_TAG = "projectmanagement-fe"
     }
     agent any
