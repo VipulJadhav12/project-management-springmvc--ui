@@ -24,4 +24,4 @@ service:
   type: NodePort
   port: 8181
   targetPort: 8181
-  nodePort: 30001
+  nodePort: 30004
