@@ -20,12 +20,12 @@ spec:
             secretName: "afourathon-wsr"
       containers:
       - name: projectmanagement-fe
-        image: $imageName
+        image: krashnat922/afourathon2.0:projectmanagement-fe
+        imagePullPolicy: Always
         volumeMounts:
           - name: "placeholder-values"
             mountPath: "/app/env.values"
             subPath: "env.values"
-        # imagePullPolicy: Never
         ports:
         - containerPort: 8181
       #imagePullSecrets:
