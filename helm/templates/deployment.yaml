@@ -36,5 +36,3 @@ spec:
               mountPath: "{{ .Values.config.secretPath }}"
               subPath: "{{ .Values.config.subPath }}"
               readOnly: true
-        #  resources:
-        #    {{- toYaml .Values.resources | nindent 12 }}
