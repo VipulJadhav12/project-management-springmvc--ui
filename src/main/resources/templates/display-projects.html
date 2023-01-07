@@ -71,7 +71,7 @@
 					<td th:text="${project.managerName}" />
 					<td th:text="${project.managerEmail}" />
 					<td><a th:href="@{/displayProject(projectId=${project.id})}"
-						class="btn btn-info">Select</a></td>
+						class="btn btn-primary">Select</a></td>
 					<td><a
 						th:href="@{/updateProjectForm(projectId=${project.id})}"
 						class="btn btn-info">Update</a></td>
@@ -97,8 +97,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
-						<a href="" type="button" class="btn btn-primary"
+							data-dismiss="modal">Cancel</button>
+						<a href="" type="button" class="btn btn-danger"
 							id="deleteModalBtnRef">Yes</a>
 					</div>
 				</div>

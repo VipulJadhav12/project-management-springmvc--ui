@@ -25,7 +25,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active"><a class="nav-link"
+					<li class="nav-item"><a class="nav-link"
 						th:href="@{/displayAllProjects}">Projects <span
 							class="sr-only">(current)</span>
 					</a></li>
@@ -95,7 +95,9 @@
 
 		</table>
 		<hr />
-		<a th:href="@{/displayAllProjects}">Back to Project list</a>
+		<div align="right">
+			<a th:href="@{/displayAllProjects}" class="btn btn-primary">Back</a>
+		</div>
 		<!-- Modal -->
 		<div class="modal" tabindex="-1" role="dialog" id="removeModal">
 			<div class="modal-dialog" role="document">
