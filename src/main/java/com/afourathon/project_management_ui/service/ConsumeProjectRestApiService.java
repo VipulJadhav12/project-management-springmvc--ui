@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,13 +25,23 @@ public class ConsumeProjectRestApiService {
 	
 	@Value("${project.api.url}")
 	private String projectApiUrl;
+	
+	@Value("${spring.security.user.name}")
+	private String username;
+	
+	@Value("${spring.security.user.password}")
+	private String password;
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	UserDetailsManager userDetailsManager;
 
 	public List<Project> getAllProjects() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<List<Project>> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create(projectApiUrl + "/getAllBy=NONE");
@@ -45,6 +56,7 @@ public class ConsumeProjectRestApiService {
 	public Project getProjectById(Long projectId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<Project> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create(projectApiUrl + "/getBy=ID/project/" + projectId);
@@ -59,6 +71,7 @@ public class ConsumeProjectRestApiService {
 	public ApiResponse addProject(ProjectRequest projectRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<ProjectRequest> entity = new HttpEntity<>(projectRequest, headers);
 		
 		URI uri = URI.create(projectApiUrl + "/add");
@@ -75,6 +88,7 @@ public class ConsumeProjectRestApiService {
 	public ApiResponse updateProject(Long projectId, ProjectRequest projectRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<ProjectRequest> entity = new HttpEntity<>(projectRequest, headers);
 		
 		URI uri = URI.create(projectApiUrl + "/updateBy=ID/project/" + projectId);
@@ -91,6 +105,7 @@ public class ConsumeProjectRestApiService {
 	public String assignEmailToProject(Long projectId, Long mailId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<Project> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create(projectApiUrl + "/assignEmail/project/" + projectId + "/email/" + mailId);
@@ -112,6 +127,7 @@ public class ConsumeProjectRestApiService {
 	public String removeAssignedEmailFromProject(Long projectId, Long mailId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<Project> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create(projectApiUrl + "/removeEmail/project/" + projectId + "/email/" + mailId);
@@ -133,6 +149,7 @@ public class ConsumeProjectRestApiService {
 	public ApiResponse deleteProjectById(Long projectId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
 		URI uri = URI.create(projectApiUrl + "/deleteBy=ID/project/" + projectId);
