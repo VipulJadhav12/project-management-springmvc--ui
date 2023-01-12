@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: projectmanagement-fe-service
+ # annotations:
+ #   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  selector:
+    app: projectmanagement-fe
+  ports:
+  - protocol: TCP
+    port: 8181
+    targetPort: 8181
+    nodePort: 30005
+  type: NodePort

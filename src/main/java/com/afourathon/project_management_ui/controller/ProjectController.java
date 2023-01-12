@@ -3,16 +3,19 @@ package com.afourathon.project_management_ui.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.afourathon.project_management_ui.data.entity.MailingList;
 import com.afourathon.project_management_ui.data.entity.Project;
 import com.afourathon.project_management_ui.data.payloads.request.ProjectRequest;
+import com.afourathon.project_management_ui.data.payloads.response.ApiResponse;
 import com.afourathon.project_management_ui.service.ConsumeMailingListRestApiService;
 import com.afourathon.project_management_ui.service.ConsumeProjectRestApiService;
 
@@ -53,9 +56,14 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/addProject")
-	public String addProject(@ModelAttribute ProjectRequest projectRequest) {
-		projectService.addProject(projectRequest);
+	public String addProject(@ModelAttribute ProjectRequest projectRequest, RedirectAttributes redirAttrs) {
+		ApiResponse apiResponse = projectService.addProject(projectRequest);
 		
+		if(null == apiResponse || apiResponse.getStatus() != HttpStatus.CREATED)
+			redirAttrs.addFlashAttribute("error", "An error occured while adding new project!");
+		else
+			redirAttrs.addFlashAttribute("success", "New project was added successfully!");
+			
 		return "redirect:/displayAllProjects";
 	}
 	
@@ -78,8 +86,14 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/updateProject")
-	public String updateProject(@RequestParam Long projectId, @ModelAttribute ProjectRequest projectRequest) {
-		projectService.updateProject(projectId, projectRequest);
+	public String updateProject(@RequestParam Long projectId, @ModelAttribute ProjectRequest projectRequest, 
+			RedirectAttributes redirAttrs) {
+		ApiResponse apiResponse = projectService.updateProject(projectId, projectRequest);
+		
+		if(null == apiResponse || apiResponse.getStatus() != HttpStatus.OK)
+			redirAttrs.addFlashAttribute("error", "An error occured while updating project!");
+		else
+			redirAttrs.addFlashAttribute("success", "Project was updated successfully!");
 		
 		return "redirect:/displayAllProjects";
 	}

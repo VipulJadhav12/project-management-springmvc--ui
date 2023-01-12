@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,15 +22,25 @@ import com.afourathon.project_management_ui.data.payloads.response.ApiResponse;
 @Service
 public class ConsumeMailingListRestApiService {
 	
+	@Value("${mailing-list.api.url}")
+	private String mailingListApiUrl;
+	
+	@Value("${spring.security.user.name}")
+	private String username;
+	
+	@Value("${spring.security.user.password}")
+	private String password;
+	
 	@Autowired
 	RestTemplate restTemplate;
 	
 	public List<MailingList> getAllMailingList() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<List<MailingList>> entity = new HttpEntity<>(headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/getAllBy=NONE");
+		URI uri = URI.create(mailingListApiUrl + "/getAllBy=NONE");
 
 		ResponseEntity<List<MailingList>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<MailingList>>(){});
 		
@@ -41,9 +52,10 @@ public class ConsumeMailingListRestApiService {
 	public MailingList getEmailById(Long mailId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<MailingList> entity = new HttpEntity<>(headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/getBy=ID/email/" + mailId);
+		URI uri = URI.create(mailingListApiUrl + "/getBy=ID/email/" + mailId);
 
 		ResponseEntity<MailingList> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<MailingList>(){});
 		
@@ -55,9 +67,10 @@ public class ConsumeMailingListRestApiService {
 	public List<MailingList> getUnassignedMailingList(Long projectId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<List<MailingList>> entity = new HttpEntity<>(headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/getAllUnAssignedBy=PROJECT_ID/project/" + projectId);
+		URI uri = URI.create(mailingListApiUrl + "/getAllUnAssignedBy=PROJECT_ID/project/" + projectId);
 
 		ResponseEntity<List<MailingList>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<List<MailingList>>(){});
 		
@@ -69,9 +82,10 @@ public class ConsumeMailingListRestApiService {
 	public ApiResponse addEmail(MailingListRequest mailingListRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<MailingListRequest> entity = new HttpEntity<>(mailingListRequest, headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/add");
+		URI uri = URI.create(mailingListApiUrl + "/add");
 		
 		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.POST, entity, ApiResponse.class);
 		
@@ -85,9 +99,10 @@ public class ConsumeMailingListRestApiService {
 	public ApiResponse updateEmail(Long mailId, MailingListRequest mailingListRequest) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<MailingListRequest> entity = new HttpEntity<>(mailingListRequest, headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/updateBy=ID/email/" + mailId);
+		URI uri = URI.create(mailingListApiUrl + "/updateBy=ID/email/" + mailId);
 		
 		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.PUT, entity, ApiResponse.class);
 		
@@ -101,9 +116,10 @@ public class ConsumeMailingListRestApiService {
 	public ApiResponse deleteEmailById(Long mailId) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setBasicAuth(username, password);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		
-		URI uri = URI.create("http://localhost:9191/api/v1/emails/deleteBy=ID/email/" + mailId);
+		URI uri = URI.create(mailingListApiUrl + "/deleteBy=ID/email/" + mailId);
 
 		ResponseEntity<ApiResponse> response = restTemplate.exchange(uri, HttpMethod.DELETE, entity, ApiResponse.class);
 		
